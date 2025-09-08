@@ -79,10 +79,16 @@ def create_story_prompt(concept: str, characters: List[str], num_scenes: int, di
     Create an educational webtoon story for children about: {concept}
     
     Parameters:
-    - Characters to include: {', '.join(characters)}
+    - Characters to include (MUST use these exact names): {', '.join(characters)}
     - Number of scenes: {num_scenes}
     - Difficulty level: {difficulty}
     - Target format: Korean webtoon style (vertical scroll)
+    
+    CRITICAL CHARACTER REQUIREMENTS:
+    - You MUST use the exact character names provided: {', '.join(characters)}
+    - Do NOT create new character names or rename the characters
+    - Each scene should include at least one of these characters: {', '.join(characters)}
+    - The characters array in each scene MUST only contain names from this list: {', '.join(characters)}
     
     Requirements:
     1. Make it engaging and age-appropriate for {difficulty.lower()} students
@@ -101,7 +107,7 @@ def create_story_prompt(concept: str, characters: List[str], num_scenes: int, di
     For each scene, provide:
     - Scene number and title
     - Location/setting description
-    - Characters present in the scene
+    - Characters present (ONLY use names from: {', '.join(characters)})
     - Main dialogue (1-2 sentences per character)
     - Action/what happens in the scene
     - Specific educational point being taught
@@ -118,7 +124,7 @@ def create_story_prompt(concept: str, characters: List[str], num_scenes: int, di
                 "scene_number": 1,
                 "scene_title": "Scene title",
                 "location": "Setting description",
-                "characters": ["character1", "character2"],
+                "characters": ["character_name_from_provided_list"],
                 "dialogue": "Main dialogue between characters",
                 "action": "What happens in this scene",
                 "educational_point": "Specific learning point",
@@ -126,6 +132,8 @@ def create_story_prompt(concept: str, characters: List[str], num_scenes: int, di
             }}
         ]
     }}
+    
+    REMEMBER: Only use these character names in the scenes: {', '.join(characters)}
     """
     
     return prompt

@@ -496,6 +496,9 @@ def main():
         st.subheader("👥 Select Characters")
         selected_characters = []
         
+        # Show current selection count
+        selection_placeholder = st.empty()
+        
         # Character selection with previews
         for char_name, char_data in characters_dict.items():
             col1, col2 = st.columns([1, 3])
@@ -515,6 +518,12 @@ def main():
                             st.image(preview_img, width=80)
                     except Exception as e:
                         st.error(f"Error loading preview: {e}")
+        
+        # Update selection display
+        if selected_characters:
+            selection_placeholder.success(f"✅ Selected Characters: {', '.join(selected_characters)}")
+        else:
+            selection_placeholder.warning("⚠️ No characters selected. Please select at least one character.")
         
         st.subheader("📖 Story Configuration")
         num_scenes = st.slider("Number of Scenes", 
@@ -667,9 +676,18 @@ def main():
                     progress_bar.progress(int(progress))
                     status_text.info(f"🎨 Creating illustration for scene {i + 1}/{len(scenes)}...")
                     
+                    # Use the originally selected characters instead of AI-generated character names
+                    # This ensures the actual selected characters are used in image generation
+                    scene_characters = selected_characters if selected_characters else scene.get("characters", [])
+                    
+                    # Show which characters are being used for this scene
+                    with st.expander(f"Scene {i+1} Character Info (Debug)", expanded=False):
+                        st.write(f"AI suggested: {scene.get('characters', [])}")
+                        st.write(f"Actually using: {scene_characters}")
+                    
                     scene_img = generator.generate_scene_image_with_retry(
                         scene["visual_description"],
-                        scene["characters"],
+                        scene_characters,
                         art_style,
                         language_code
                     )
