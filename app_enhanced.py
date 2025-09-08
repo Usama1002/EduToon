@@ -755,7 +755,7 @@ def main():
                     with scene_col1:
                         st.markdown(f"**Scene {scene['scene_number']}: {scene.get('scene_title', scene['location'])}**")
                         if img:
-                            st.image(img, caption=f"Scene {i + 1}", use_column_width=True)
+                            st.image(img, caption=f"Scene {i + 1}", width='stretch')
                         else:
                             st.error("Image generation failed for this scene")
                     
@@ -793,7 +793,7 @@ def main():
                 st.image(
                     st.session_state.webtoon_image,
                     caption="Full Educational Webtoon - Korean Style Layout",
-                    use_column_width=True
+                    width='stretch'
                 )
             
             with col2:
@@ -826,9 +826,24 @@ def main():
                 
                 st.markdown("### 📊 Story Statistics")
                 st.metric("Total Scenes", len(story.get("scenes", [])))
-                st.metric("Average Words per Scene", 
-                         sum(len(scene.get("dialogue", "").split()) + len(scene.get("action", "").split()) 
-                             for scene in story.get("scenes", [])) // max(len(story.get("scenes", [])), 1))
+                
+                # Calculate average words per scene with proper type checking
+                total_words = 0
+                scene_count = len(story.get("scenes", []))
+                
+                for scene in story.get("scenes", []):
+                    # Safely get dialogue and action as strings
+                    dialogue = scene.get("dialogue", "")
+                    action = scene.get("action", "")
+                    
+                    # Ensure they are strings before splitting
+                    if isinstance(dialogue, str):
+                        total_words += len(dialogue.split())
+                    if isinstance(action, str):
+                        total_words += len(action.split())
+                
+                avg_words = total_words // max(scene_count, 1)
+                st.metric("Average Words per Scene", avg_words)
 
 if __name__ == "__main__":
     main()
