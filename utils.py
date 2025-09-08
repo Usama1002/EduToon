@@ -131,7 +131,7 @@ def create_story_prompt(concept: str, characters: List[str], num_scenes: int, di
     return prompt
 
 def create_image_prompt(scene_description: str, characters: List[str], style: str = "cartoon") -> str:
-    """Create an enhanced prompt for image generation."""
+    """Create an enhanced prompt for image generation with child-friendly elements."""
     
     base_prompt = f"""
     Create a high-quality educational webtoon scene in Korean manhwa style:
@@ -140,22 +140,37 @@ def create_image_prompt(scene_description: str, characters: List[str], style: st
     Characters: {', '.join(characters)}
     Art Style: {style}
     
-    Visual Requirements:
-    - Korean webtoon/manhwa art style with clean lines. However, use English text for any signs or written elements.
-    - Bright, vibrant colors suitable for children
-    - Clear character expressions and body language
-    - Educational and friendly atmosphere
-    - Optimized for vertical webtoon panel layout
-    - High contrast for good readability
-    - Child-friendly and engaging composition
-    - Professional illustration quality
+    CHILD-FRIENDLY VISUAL REQUIREMENTS:
+    - Korean webtoon/manhwa art style with clean, bold lines
+    - Include SPEECH BUBBLES with educational dialogue and encouraging words
+    - Add COLORFUL TEXT EFFECTS like "WOW!", "AMAZING!", "COOL!", "I GET IT!"
+    - Show characters with EXPRESSIVE EMOTIONS (excited eyes, big smiles, surprised expressions)
+    - Include EDUCATIONAL LABELS and simple visual explanations
+    - Add PLAYFUL ELEMENTS like sparkles, stars, hearts, and fun shapes around characters
+    - Use BRIGHT, VIBRANT colors that appeal to children (rainbow colors, pastels)
+    - Characters should show DYNAMIC BODY LANGUAGE (pointing, jumping, clapping)
+    - Include THOUGHT BUBBLES showing characters thinking about the educational concept
+    - Add INTERACTIVE VISUAL ELEMENTS like arrows, question marks, exclamation points
+    
+    TEXT AND EDUCATIONAL ELEMENTS:
+    - Simple, clear text in speech bubbles with child-appropriate language
+    - Educational facts presented in fun, colorful text boxes
+    - Encouraging phrases like "Let's learn together!", "So exciting!", "Learning is fun!"
+    - Sound effects that match the educational content
+    
+    EMOTIONAL EXPRESSION GUIDELINES:
+    - Characters must show genuine excitement and curiosity about learning
+    - Use exaggerated, anime-style facial expressions (wide sparkly eyes, huge smiles)
+    - Body language should be energetic and enthusiastic
+    - Include gestures showing discovery and understanding
     
     Technical Specifications:
-    - Clear character details and facial expressions
-    - Appropriate background that supports the scene
-    - Good lighting and depth
-    - Suitable for educational content
-    - High resolution and crisp details
+    - Optimized for vertical webtoon panel layout
+    - High contrast for excellent readability
+    - Professional illustration quality suitable for children's education
+    - Clear character details with enhanced emotional expressions
+    - Bright, engaging background that supports the educational scene
+    - Good lighting and visual depth to make characters pop
     """
     
     return base_prompt
