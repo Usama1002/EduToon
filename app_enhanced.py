@@ -100,7 +100,8 @@ class EnhancedWebtoonGenerator:
             return None
     
     def get_character_reference_images(self, character_names: List[str]) -> List[Image.Image]:
-        """Get reference images for specified characters."""
+        """Get reference images for specified characters with random selection for variety."""
+        import random
         reference_images = []
         
         # Load character assets
@@ -108,8 +109,10 @@ class EnhancedWebtoonGenerator:
         
         for char_name in character_names:
             if char_name in characters_dict and characters_dict[char_name]["assets"]:
-                # Use the first available asset as reference
-                char_image_path = characters_dict[char_name]["assets"][0]
+                # Randomly select from available assets for variety
+                available_assets = characters_dict[char_name]["assets"]
+                char_image_path = random.choice(available_assets)
+                
                 try:
                     char_image = Image.open(char_image_path)
                     # Resize if too large (for API efficiency)
@@ -132,21 +135,40 @@ class EnhancedWebtoonGenerator:
         
         # Create enhanced prompt that references the character images
         if reference_images:
-            prompt = f"""Create a Korean webtoon-style scene based on the provided character reference images. 
+            prompt = f"""Create a Korean webtoon-style educational scene based on the provided character reference images. 
 
 Scene Description: {scene_description}
 
 Characters to include: {', '.join(characters)}
 
-Style Requirements:
-- Korean webtoon art style ({style})
+IMPORTANT VISUAL REQUIREMENTS:
+- Korean webtoon art style (manhwa style)
 - Use the provided character images as visual references for the characters' appearance
 - Maintain the characters' distinctive visual features from the reference images
-- Bright, colorful, educational and child-friendly
-- Vertical panel format suitable for webtoons
-- Clean line art with vibrant colors
+- Include SPEECH BUBBLES with educational text and child-friendly dialogue
+- Add SOUND EFFECTS text (like "WOW!", "AMAZING!", "COOL!") in colorful bubble letters
+- Include EDUCATIONAL LABELS and simple explanations visible in the scene
+- Add THOUGHT BUBBLES showing characters thinking about the concept
+- Use BRIGHT, VIBRANT colors that appeal to children
+- Include CUTE ELEMENTS like sparkles, stars, hearts, and fun shapes
+- Make characters show EXPRESSIVE EMOTIONS (excited, curious, happy, surprised)
+- Add INTERACTIVE ELEMENTS like pointing arrows, question marks, exclamation points
+- Include SIMPLE TEXT EXPLANATIONS in easy-to-read fonts
+- Make the scene PLAYFUL and ENGAGING for kids aged 6-12
 
-Keep the characters' original designs but place them in the described scene context."""
+Text Elements to Include:
+- Educational dialogue in speech bubbles
+- Simple explanations or facts
+- Encouraging words like "Let's learn!", "So cool!", "I understand now!"
+- Sound effects that match the scene
+
+Emotional Expression Guidelines:
+- Characters should show genuine excitement about learning
+- Use exaggerated facial expressions (wide eyes, big smiles, surprised looks)
+- Body language should be dynamic and energetic
+- Include gestures like pointing, clapping, jumping with joy
+
+Keep the characters' original designs but enhance their expressions and place them in the described educational scene context."""
         else:
             # Fallback to text-only prompt if no character images available
             prompt = create_image_prompt(scene_description, characters, style)
@@ -507,6 +529,20 @@ def main():
         # Complete webtoon display
         if hasattr(st.session_state, 'webtoon_image') and st.session_state.webtoon_image:
             st.header("📱 Complete Educational Webtoon")
+            
+            # Prominent button for webtoon viewer
+            st.markdown("---")
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
+                if st.button(
+                    "📱 VIEW WEBTOON FULLSCREEN", 
+                    type="primary",
+                    help="Open the webtoon in a clean, distraction-free viewer",
+                    use_container_width=True
+                ):
+                    st.switch_page("pages/webtoon_viewer.py")
+            
+            st.markdown("---")
             
             col1, col2 = st.columns([3, 1])
             
