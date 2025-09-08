@@ -1,0 +1,84 @@
+{
+  "title": "Oz and the Magical Leaf: A Photosynthesis Adventure",
+  "concept": "How plants make food through photosynthesis",
+  "target_age": "Preschool",
+  "learning_objectives": [
+    "Understand that plants need food to grow.",
+    "Learn that plants make their own food using sunlight, water, and air.",
+    "Recognize that photosynthesis is the process of plants making food."
+  ],
+  "scenes": [
+    {
+      "scene_number": 1,
+      "scene_title": "A Thirsty Plant",
+      "location": "A sunny garden with colorful flowers and a single, droopy plant in a pot.",
+      "characters": [
+        "Oz"
+      ],
+      "dialogue": "Oz: Oh no! This little plant looks so sad and droopy. I wonder what's wrong?",
+      "action": "Oz kneels down next to the droopy plant, looking concerned.",
+      "educational_point": "Plants need water to live and grow.",
+      "visual_description": "Oz, a cheerful young boy with bright eyes and overalls, is kneeling beside a potted plant with wilted leaves. The background is a colorful garden with blooming flowers and a bright, sunny sky. The droopy plant is the focal point, contrasting with the vibrant surroundings. Style: Cute, cartoonish, using bright, pastel colors."
+    },
+    {
+      "scene_number": 2,
+      "scene_title": "Watering Time!",
+      "location": "The same sunny garden, but now Oz is holding a watering can.",
+      "characters": [
+        "Oz"
+      ],
+      "dialogue": "Oz: Maybe it's thirsty! I'll give it some water. Plants need water!",
+      "action": "Oz carefully waters the plant with the watering can. The plant starts to perk up slightly.",
+      "educational_point": "Water helps plants stand up straight and grow.",
+      "visual_description": "Oz is carefully watering the plant. The plant's leaves are starting to look a little less droopy. Sunlight glints off the water droplets. The watering can is brightly colored. Style: Cute, cartoonish, using bright, pastel colors."
+    },
+    {
+      "scene_number": 3,
+      "scene_title": "Sunshine and Air",
+      "location": "The sunny garden, now with the plant standing up straighter.",
+      "characters": [
+        "Oz"
+      ],
+      "dialogue": "Oz: Look! It's getting better! But what else does it need? I know, sunshine and air!",
+      "action": "Oz points to the sun and then waves his hand in the air. The sun is shining brightly.",
+      "educational_point": "Plants need sunlight and air to live.",
+      "visual_description": "Oz is pointing towards a smiling sun in the sky. The plant is standing up straighter and looks healthier. There is a gentle breeze blowing the leaves. Style: Cute, cartoonish, using bright, pastel colors."
+    },
+    {
+      "scene_number": 4,
+      "scene_title": "The Leaf's Secret",
+      "location": "Close-up on a single green leaf of the plant.",
+      "characters": [
+        "Oz"
+      ],
+      "dialogue": "Oz: I wonder how the plant uses the sunshine and air... It's like magic!",
+      "action": "The camera zooms in on the leaf, and tiny sparkles appear inside it.",
+      "educational_point": "Leaves use sunlight, air, and water to make food.",
+      "visual_description": "Extreme close-up of a vibrant green leaf. Tiny sparkles of light are swirling inside the leaf, representing the process of making food. The veins of the leaf are clearly visible. Style: Cute, cartoonish, using bright, pastel colors, with a touch of fantasy (sparkles)."
+    },
+    {
+      "scene_number": 5,
+      "scene_title": "Plant Food Power!",
+      "location": "The same sunny garden, with the plant now thriving and growing bigger.",
+      "characters": [
+        "Oz"
+      ],
+      "dialogue": "Oz: Wow! The plant is growing so big and strong! It made its own food!",
+      "action": "The plant visibly grows taller and sprouts a new flower.",
+      "educational_point": "Plants make their own food to grow.",
+      "visual_description": "The plant is now much larger and healthier, with a bright new flower blooming. Oz is looking up at the plant with amazement and a big smile. The background garden is even more vibrant and colorful. Style: Cute, cartoonish, using bright, pastel colors."
+    },
+    {
+      "scene_number": 6,
+      "scene_title": "Photosynthesis Fun!",
+      "location": "The sunny garden, with Oz surrounded by happy, healthy plants.",
+      "characters": [
+        "Oz"
+      ],
+      "dialogue": "Oz: Plants are amazing! They use sunshine, air, and water to make their own food! It's called photosynthesis!",
+      "action": "Oz claps his hands happily. The other plants in the garden seem to be smiling.",
+      "educational_point": "The process of plants making food is called photosynthesis.",
+      "visual_description": "Oz is surrounded by thriving, happy plants in the garden. He's clapping his hands with joy. The sun is shining brightly, and the scene is full of life and color. A small speech bubble above Oz's head says \"Photosynthesis!\". Style: Cute, cartoonish, using bright, pastel colors."
+    }
+  ]
+}
