@@ -22,6 +22,146 @@ except ImportError:
     st.error("Google GenAI library not installed. Please run: pip install google-genai")
     st.stop()
 
+# Professional styling
+def load_professional_css():
+    st.markdown("""
+    <style>
+    /* Global styling */
+    .main {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        font-family: 'Segoe UI', 'Roboto', sans-serif;
+    }
+    
+    /* Header styling */
+    .main-header {
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem;
+        border-radius: 15px;
+        color: white;
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+    
+    .main-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .main-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 0;
+    }
+    
+    /* Card styling */
+    .feature-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        margin-bottom: 2rem;
+        border: 1px solid #e1e8ed;
+    }
+    
+    .card-title {
+        color: #2c3e50;
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    /* Input styling */
+    .stTextInput > div > div > input,
+    .stTextArea > div > div > textarea,
+    .stSelectbox > div > div > select {
+        border: 2px solid #e1e8ed;
+        border-radius: 10px;
+        padding: 0.75rem;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+    
+    .stTextInput > div > div > input:focus,
+    .stTextArea > div > div > textarea:focus,
+    .stSelectbox > div > div > select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    /* Button styling */
+    .stButton > button {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    /* Progress bar styling */
+    .stProgress > div > div > div {
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        border-radius: 10px;
+    }
+    
+    /* Success/Error message styling */
+    .stSuccess {
+        background: linear-gradient(90deg, #56ab2f, #a8e6cf);
+        border-radius: 10px;
+        padding: 1rem;
+        border: none;
+    }
+    
+    .stError {
+        background: linear-gradient(90deg, #ff6b6b, #ffa8a8);
+        border-radius: 10px;
+        padding: 1rem;
+        border: none;
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    /* Image container */
+    .image-container {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        margin: 1rem 0;
+    }
+    
+    /* Language selector styling */
+    .language-selector {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        border-left: 4px solid #667eea;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Hide Streamlit branding */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    .stDeployButton {display: none;}
+    </style>
+    """, unsafe_allow_html=True)
+
 class EnhancedWebtoonGenerator:
     def __init__(self):
         """Initialize the Enhanced Webtoon Generator."""
@@ -125,29 +265,54 @@ class EnhancedWebtoonGenerator:
         
         return reference_images
     
-    def generate_scene_image_with_retry(self, scene_description: str, characters: List[str], style: str = "cartoon") -> Optional[Image.Image]:
-        """Generate scene image with character reference images and retry logic."""
+    def generate_scene_image_with_retry(self, scene_description: str, characters: List[str], style: str = "cartoon", language: str = "en") -> Optional[Image.Image]:
+        """Generate scene image with character reference images, language support, and retry logic."""
         if not self.client:
             return None
         
         # Get character reference images
         reference_images = self.get_character_reference_images(characters)
         
+        # Language-specific text guidance
+        language_guidance = {
+            "en": "English text in speech bubbles and labels",
+            "es": "Texto en español en globos de diálogo y etiquetas", 
+            "fr": "Texte en français dans les bulles de dialogue et étiquettes",
+            "de": "Deutscher Text in Sprechblasen und Beschriftungen",
+            "ja": "日本語のテキストを吹き出しやラベルに",
+            "ko": "한국어 텍스트를 말풍선과 라벨에",
+            "zh-cn": "中文文本在对话气泡和标签中",
+            "ar": "النص العربي في فقاعات الحوار والتسميات",
+            "hi": "बोलने के बुलबुले और लेबल में हिंदी पाठ",
+            "pt": "Texto em português em balões de fala e etiquetas",
+            "it": "Testo italiano in fumetti e etichette",
+            "ru": "Русский текст в пузырях речи и этикетках"
+        }
+        
+        lang_text = language_guidance.get(language, language_guidance["en"])
+        
         # Create enhanced prompt that references the character images
         if reference_images:
             prompt = f"""Create a Korean webtoon-style educational scene based on the provided character reference images. 
 
 Scene Description: {scene_description}
-
 Characters to include: {', '.join(characters)}
+Language for all text: {language.upper()}
+
+CRITICAL SPELLING AND LANGUAGE REQUIREMENTS:
+- ALL text must be in {language.upper()} language with PERFECT spelling
+- {lang_text}
+- Double-check spelling of ALL words before generating
+- Use proper grammar and punctuation for {language.upper()}
+- Text must be clear and readable
 
 IMPORTANT VISUAL REQUIREMENTS:
 - Korean webtoon art style (manhwa style)
 - Use the provided character images as visual references for the characters' appearance
 - Maintain the characters' distinctive visual features from the reference images
-- Include SPEECH BUBBLES with educational text and child-friendly dialogue
-- Add SOUND EFFECTS text (like "WOW!", "AMAZING!", "COOL!") in colorful bubble letters
-- Include EDUCATIONAL LABELS and simple explanations visible in the scene
+- Include SPEECH BUBBLES with educational text and child-friendly dialogue in {language.upper()}
+- Add SOUND EFFECTS text in colorful bubble letters (in {language.upper()})
+- Include EDUCATIONAL LABELS and simple explanations visible in the scene (in {language.upper()})
 - Add THOUGHT BUBBLES showing characters thinking about the concept
 - Use BRIGHT, VIBRANT colors that appeal to children
 - Include CUTE ELEMENTS like sparkles, stars, hearts, and fun shapes
@@ -156,10 +321,10 @@ IMPORTANT VISUAL REQUIREMENTS:
 - Include SIMPLE TEXT EXPLANATIONS in easy-to-read fonts
 - Make the scene PLAYFUL and ENGAGING for kids aged 6-12
 
-Text Elements to Include:
+Text Elements to Include (in {language.upper()}):
 - Educational dialogue in speech bubbles
 - Simple explanations or facts
-- Encouraging words like "Let's learn!", "So cool!", "I understand now!"
+- Encouraging words appropriate for the selected language
 - Sound effects that match the scene
 
 Emotional Expression Guidelines:
@@ -171,7 +336,7 @@ Emotional Expression Guidelines:
 Keep the characters' original designs but enhance their expressions and place them in the described educational scene context."""
         else:
             # Fallback to text-only prompt if no character images available
-            prompt = create_image_prompt(scene_description, characters, style)
+            prompt = create_image_prompt(scene_description, characters, style, language)
         
         for attempt in range(IMAGE_CONFIG["max_retries"]):
             try:
@@ -263,38 +428,22 @@ Keep the characters' original designs but enhance their expressions and place th
 
 def main():
     st.set_page_config(
-        page_title="Educational Webtoon Generator",
-        page_icon="📚",
+        page_title="EduToon - Educational Webtoon Generator",
+        page_icon="🎭",
         layout="wide",
         initial_sidebar_state="expanded"
     )
     
-    # Custom CSS for better styling
-    st.markdown("""
-    <style>
-    .main-header {
-        text-align: center;
-        color: #2E86AB;
-        padding: 1rem 0;
-    }
-    .character-preview {
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        padding: 10px;
-        margin: 5px;
-    }
-    .scene-container {
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 15px;
-        margin: 10px 0;
-        background-color: #f9f9f9;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    # Load professional CSS
+    load_professional_css()
     
-    st.markdown('<h1 class="main-header">🎭 Educational Webtoon Generator</h1>', unsafe_allow_html=True)
-    st.markdown("Transform learning concepts into engaging Korean-style webtoons for kids!")
+    # Professional Header
+    st.markdown("""
+    <div class="main-header">
+        <div class="main-title">🎭 EduToon</div>
+        <div class="main-subtitle">Transform learning into engaging visual stories</div>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Initialize generator
     generator = EnhancedWebtoonGenerator()
@@ -304,7 +453,37 @@ def main():
     
     # Sidebar configuration
     with st.sidebar:
-        st.header("⚙️ Configuration")
+        st.markdown('<div class="card-title">⚙️ Configuration</div>', unsafe_allow_html=True)
+        
+        # Language Selection - NEW FEATURE
+        st.markdown('<div class="language-selector">', unsafe_allow_html=True)
+        st.markdown("🌐 **Language Settings**")
+        
+        # Define supported languages
+        languages = {
+            "English": "en",
+            "Spanish": "es", 
+            "French": "fr",
+            "German": "de",
+            "Italian": "it",
+            "Portuguese": "pt",
+            "Japanese": "ja",
+            "Korean": "ko",
+            "Chinese (Simplified)": "zh-cn",
+            "Arabic": "ar",
+            "Hindi": "hi",
+            "Russian": "ru"
+        }
+        
+        selected_language = st.selectbox(
+            "Select language for text in images:",
+            options=list(languages.keys()),
+            index=0,
+            help="This will control the language of text, speech bubbles, and captions in the generated images"
+        )
+        
+        language_code = languages[selected_language]
+        st.markdown('</div>', unsafe_allow_html=True)
         
         # Load character assets
         characters_dict = load_character_assets()
@@ -351,46 +530,91 @@ def main():
         show_individual_scenes = st.checkbox("Show individual scenes", value=True)
     
     # Main content area
-    st.header("📝 Educational Concept")
+    st.markdown('<div class="feature-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">📝 Educational Concept</div>', unsafe_allow_html=True)
     
     # Concept input with examples
     concept_examples = [
         "How plants make food through photosynthesis",
-        "The water cycle and weather patterns",
-        "Basic addition and subtraction with fun examples",
+        "The water cycle and weather patterns", 
+        "Basic math with fun examples",
         "The importance of friendship and kindness",
         "How the solar system works",
-        "The life cycle of a butterfly",
-        "Why we need to recycle and protect the environment"
+        "The life cycle of a butterfly"
     ]
     
-    example_text = "**Example concepts:** " + " • ".join(concept_examples)
-    st.markdown(example_text)
+    st.markdown("**💡 Popular Topics:** " + " • ".join(concept_examples))
     
     concept = st.text_area(
-        "Enter the educational concept or topic:",
-        placeholder="Example: How photosynthesis works - plants use sunlight, water, and carbon dioxide to make their own food...",
+        "Describe what you want to teach:",
+        value=st.session_state.get('example_concept', ''),
+        placeholder="Example: Explain photosynthesis in a fun way - how plants use sunlight, water, and CO₂ to make food and release oxygen...",
         height=120,
-        help="Be specific about what you want to teach. Include key points you want covered."
-    )
+        help="Be specific about the learning goals and key concepts to cover",
+        label_visibility="collapsed"
+    ) or ""
     
-    # Generation controls
-    col1, col2, col3 = st.columns([2, 1, 1])
+    # Additional context input
+    col1, col2 = st.columns(2)
+    with col1:
+        age_group = st.selectbox(
+            "Target Age Group:",
+            ["5-7 years", "8-10 years", "11-13 years", "14-16 years"],
+            index=1
+        )
+    
+    with col2:
+        learning_style = st.selectbox(
+            "Learning Focus:",
+            ["Visual & Interactive", "Story-driven", "Problem-solving", "Creative Expression"],
+            index=0
+        )
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Generation controls section
+    st.markdown('<div class="feature-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">🚀 Generate Your Webtoon</div>', unsafe_allow_html=True)
+    
+    # Validation checks
+    validation_checks = []
+    if not concept.strip():
+        validation_checks.append("📝 Please enter an educational concept")
+    if not selected_characters:
+        validation_checks.append("👥 Please select at least one character")
+    
+    if validation_checks:
+        st.warning("⚠️ Please complete the following:")
+        for check in validation_checks:
+            st.write(f"• {check}")
+    else:
+        st.success("✅ Ready to generate! All requirements met.")
+    
+    # Generation button
+    col1, col2, col3 = st.columns([3, 1, 1])
     
     with col1:
         generate_button = st.button(
             "🎬 Generate Educational Webtoon", 
             type="primary", 
-            disabled=not (concept and selected_characters),
-            help="Generate a complete educational webtoon based on your inputs"
+            disabled=bool(validation_checks),
+            help="Create an engaging educational webtoon with your selected characters and concept",
+            use_container_width=True
         )
     
     with col2:
-        if st.button("🔄 Clear All"):
+        if st.button("🔄 Reset", use_container_width=True):
             for key in list(st.session_state.keys()):
                 if isinstance(key, str) and key.startswith(('story_', 'scene_', 'webtoon_')):
                     del st.session_state[key]
             st.rerun()
+    
+    with col3:
+        if st.button("💡 Example", use_container_width=True):
+            st.session_state.example_concept = "Photosynthesis: How plants make their own food using sunlight, water, and carbon dioxide to create glucose and oxygen"
+            st.rerun()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
     
     with col3:
         st.write(f"**Selected:** {len(selected_characters)} characters")
@@ -446,7 +670,8 @@ def main():
                     scene_img = generator.generate_scene_image_with_retry(
                         scene["visual_description"],
                         scene["characters"],
-                        art_style
+                        art_style,
+                        language_code
                     )
                     scene_images.append(scene_img)
                     

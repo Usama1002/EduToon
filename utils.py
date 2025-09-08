@@ -130,22 +130,72 @@ def create_story_prompt(concept: str, characters: List[str], num_scenes: int, di
     
     return prompt
 
-def create_image_prompt(scene_description: str, characters: List[str], style: str = "cartoon") -> str:
-    """Create an enhanced prompt for image generation with child-friendly elements."""
+def create_image_prompt(scene_description: str, characters: List[str], style: str = "cartoon", language: str = "en") -> str:
+    """Create an enhanced prompt for image generation with language support and spelling accuracy."""
+    
+    # Language-specific settings
+    language_settings = {
+        "en": {
+            "excitement": ["WOW!", "AMAZING!", "COOL!", "AWESOME!", "I GET IT!"],
+            "encouragement": ["Let's learn together!", "So exciting!", "Learning is fun!", "Great job!"],
+            "educational": "educational dialogue and encouraging words",
+            "name": "English"
+        },
+        "es": {
+            "excitement": ["¡GUAU!", "¡INCREÍBLE!", "¡GENIAL!", "¡LO ENTIENDO!"],
+            "encouragement": ["¡Aprendamos juntos!", "¡Qué emocionante!", "¡Aprender es divertido!"],
+            "educational": "diálogo educativo y palabras de aliento",
+            "name": "Spanish"
+        },
+        "fr": {
+            "excitement": ["OUAH!", "INCROYABLE!", "GÉNIAL!", "JE COMPRENDS!"],
+            "encouragement": ["Apprenons ensemble!", "C'est passionnant!", "Apprendre c'est amusant!"],
+            "educational": "dialogue éducatif et mots d'encouragement",
+            "name": "French"
+        },
+        "de": {
+            "excitement": ["WOW!", "ERSTAUNLICH!", "TOLL!", "ICH VERSTEHE!"],
+            "encouragement": ["Lasst uns zusammen lernen!", "So aufregend!", "Lernen macht Spaß!"],
+            "educational": "lehrreicher Dialog und ermutigende Worte",
+            "name": "German"
+        },
+        "ja": {
+            "excitement": ["すごい!", "わあ!", "やった!", "わかった!"],
+            "encouragement": ["一緒に学ぼう!", "楽しい!", "学習は楽しい!"],
+            "educational": "教育的な対話と励ましの言葉",
+            "name": "Japanese"
+        },
+        "ko": {
+            "excitement": ["와!", "대단해!", "멋져!", "알겠다!"],
+            "encouragement": ["함께 배우자!", "너무 신나!", "학습은 재미있어!"],
+            "educational": "교육적인 대화와 격려의 말",
+            "name": "Korean"
+        }
+    }
+    
+    # Default to English if language not supported
+    lang_config = language_settings.get(language, language_settings["en"])
     
     base_prompt = f"""
-    Create a high-quality educational webtoon scene in Korean manhwa style:
+    Create a high-quality educational webtoon scene in Korean manhwa style with {lang_config['name']} text:
     
     Scene Description: {scene_description}
     Characters: {', '.join(characters)}
     Art Style: {style}
+    Language for all text: {lang_config['name']}
+    
+    LANGUAGE AND SPELLING REQUIREMENTS:
+    - ALL TEXT must be in {lang_config['name']} language
+    - Use PERFECT SPELLING and grammar - double-check all words
+    - Text should be clear, readable, and age-appropriate
+    - Ensure correct character encoding for special characters
     
     CHILD-FRIENDLY VISUAL REQUIREMENTS:
     - Korean webtoon/manhwa art style with clean, bold lines
-    - Include SPEECH BUBBLES with educational dialogue and encouraging words
-    - Add COLORFUL TEXT EFFECTS like "WOW!", "AMAZING!", "COOL!", "I GET IT!"
+    - Include SPEECH BUBBLES with {lang_config['educational']}
+    - Add COLORFUL TEXT EFFECTS: {', '.join(lang_config['excitement'])}
     - Show characters with EXPRESSIVE EMOTIONS (excited eyes, big smiles, surprised expressions)
-    - Include EDUCATIONAL LABELS and simple visual explanations
+    - Include EDUCATIONAL LABELS and simple visual explanations in {lang_config['name']}
     - Add PLAYFUL ELEMENTS like sparkles, stars, hearts, and fun shapes around characters
     - Use BRIGHT, VIBRANT colors that appeal to children (rainbow colors, pastels)
     - Characters should show DYNAMIC BODY LANGUAGE (pointing, jumping, clapping)
@@ -153,10 +203,11 @@ def create_image_prompt(scene_description: str, characters: List[str], style: st
     - Add INTERACTIVE VISUAL ELEMENTS like arrows, question marks, exclamation points
     
     TEXT AND EDUCATIONAL ELEMENTS:
-    - Simple, clear text in speech bubbles with child-appropriate language
+    - Simple, clear text in speech bubbles with child-appropriate language in {lang_config['name']}
     - Educational facts presented in fun, colorful text boxes
-    - Encouraging phrases like "Let's learn together!", "So exciting!", "Learning is fun!"
+    - Encouraging phrases: {', '.join(lang_config['encouragement'])}
     - Sound effects that match the educational content
+    - IMPORTANT: All text must be spelled correctly in {lang_config['name']}
     
     EMOTIONAL EXPRESSION GUIDELINES:
     - Characters must show genuine excitement and curiosity about learning
@@ -171,6 +222,7 @@ def create_image_prompt(scene_description: str, characters: List[str], style: st
     - Clear character details with enhanced emotional expressions
     - Bright, engaging background that supports the educational scene
     - Good lighting and visual depth to make characters pop
+    - Ensure text is large enough to read clearly
     """
     
     return base_prompt
